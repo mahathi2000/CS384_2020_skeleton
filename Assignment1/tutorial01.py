@@ -18,3 +18,8 @@ def divide(num1, num2):
 	#DivisionLogic 
 	return division
 	
+# Function to divide two numbers 
+def power(num1, num2): #num1 ^ num2
+	#DivisionLogic 
+	return division
+	

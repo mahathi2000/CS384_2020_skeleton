@@ -1,6 +1,6 @@
 import tutorial01 as A1
 
-actual_answers = [9, 12, 7, 120]
+actual_answers = [9, 12]
 student_answers = []
 
 test_case_1 = A1.add(4, 5)
@@ -8,12 +8,6 @@ student_answers.append(test_case_1)
 
 test_case_2 = A1.subtract(14, 2)
 student_answers.append(test_case_2)
-
-test_case_3 = A1.subtract(15, 8)
-student_answers.append(test_case_3)
-
-test_case_4 = A1.multiply(15, 8)
-student_answers.append(test_case_4)
 
 print(actual_answers)
 print(student_answers)

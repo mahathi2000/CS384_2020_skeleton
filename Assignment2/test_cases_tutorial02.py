@@ -1,6 +1,6 @@
 import tutorial02 as A2
 
-actual_answers = [0.558, 0.641, 0.302, 0.091, -0.389, -1.003, 0.475, 0.226, 0.404, -1.108, 0.051, 0, 0, 0]
+actual_answers = [0.55, 0.64, 0.30, 0.09, -0.38, 1.99, 0.47, 0.22, 0.40, -1.47, 0.05, 0, 0, 0]
 student_answers = []
 
 import numpy as np

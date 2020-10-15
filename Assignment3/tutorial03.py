@@ -1,4 +1,9 @@
-import csv
+
+
+def del_create_analytics_folder():
+    # del the analytics folder including subfolder
+    # mkdir the analytics folder (only mkdir)
+    pass
 
 
 def course():

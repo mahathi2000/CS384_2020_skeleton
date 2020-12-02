@@ -66,12 +66,23 @@ def login():
 questions=[]
 answers_choice=[]
 indexes=[]
+positive_marks=[]
+neg_marks=[]
+compulsory=[]
+right_answer=[]
+marked_ans=[]
+time=20
+ques=1
 def make_list_of_q():
     cwd = os.getcwd()
     path = os.path.join(cwd,f"quiz_wise_questions")
     os.chdir(path)
     global text
     df = pd.read_csv(f"q{n}.csv")
+    p=df.columns[-1]
+    t=re.split('[a-b=]+',p)
+    t=re.split('[m]+',t[1])
+    time=int(t[0])
     text = df.values.tolist()
     i=0
     for row in text:
@@ -84,15 +95,124 @@ def make_list_of_q():
         questions.append(row[1])
         indexes.append(i)
         i+=1
+        right_answer.append(row[6])
+        positive_marks.append(row[7])
+        neg_marks.append(row[8])
+        if row[9].lower()=='y':
+            compulsory.append("Yes")
+        else:
+            compulsory.append("No")
     os.chdir(cwd)
 
+# taking in user answer 
+def selected():
+    global radiovar,user_answer
+    global lblQuestion,r1,r2,r3,r4,r5,lblRules
+    global ques
+    x = radiovar.get()
+    marked_ans.append(x)
+    radiovar.set(-1)
+    if ques < len(questions):
+        lblQuestion.config(text= questions[indexes[ques]])
+        lblRules.config(text= "Credits if Correct Option: "+str(positive_marks[ques])+"\nNegative Marking: "+str(neg_marks[ques])+"\nIs compulsory: "+compulsory[ques-1])
+        r1['text'] = answers_choice[indexes[ques]][0]
+        r2['text'] = answers_choice[indexes[ques]][1]
+        r3['text'] = answers_choice[indexes[ques]][2]
+        r4['text'] = answers_choice[indexes[ques]][3]
+        ques += 1
+    else:
+        # calc()
+        print(marked_ans)
 
+# printing questions and options 
+def startquiz():
+    global lblQuestion,r1,r2,r3,r4,r5,lblRules
+    lblQuestion = Label(
+        root,
+        text = questions[indexes[0]],
+        font = ("Consolas", 16),
+        width = 500,
+        justify = "center",
+        wraplength = 400,
+        background = "#ffffff",
+    )
+    lblQuestion.pack(pady=(100,40))
+
+    global radiovar
+    radiovar = IntVar()
+    radiovar.set(-1)
+
+    r1 = Radiobutton(
+        root,
+        text = answers_choice[indexes[0]][0],
+        font = ("Times", 12),
+        value = 0,
+        variable = radiovar,
+        command = selected,
+        background = "#ffffff",
+    )
+    r1.pack(pady=5)
+
+    r2 = Radiobutton(
+        root,
+        text = answers_choice[indexes[0]][1],
+        font = ("Times", 12),
+        value = 1,
+        variable = radiovar,
+        command = selected,
+        background = "#ffffff",
+    )
+    r2.pack(pady=5)
+
+    r3 = Radiobutton(
+        root,
+        text = answers_choice[indexes[0]][2],
+        font = ("Times", 12),
+        value = 2,
+        variable = radiovar,
+        command = selected,
+        background = "#ffffff",
+    )
+    r3.pack(pady=5)
+
+    r4 = Radiobutton(
+        root,
+        text = answers_choice[indexes[0]][3],
+        font = ("Times", 12),
+        value = 3,
+        variable = radiovar,
+        command = selected,
+        background = "#ffffff",
+    )
+    r4.pack(pady=5)
+
+    r5 = Radiobutton(
+        root,
+        text = '**Skip this question**',
+        font = ("Times", 12),
+        value = 4,
+        variable = radiovar,
+        command = selected,
+        background = "#ffffff",
+    )
+    r5.pack(pady=15)
+
+    lblRules = Label(
+        root,
+        text = "Credits if Correct Option: "+str(positive_marks[ques-1])+"\nNegative Marking: "+str(neg_marks[ques-1])+"\nIs compulsory: "+compulsory[ques-1],
+        width = 100,
+        font = ("Times",14),
+        background = "#4d4d4d",
+        foreground = "#ffffff",
+    )
+    lblRules.pack(pady=50)
+    
 
 def startIspressed():
     labeltext.destroy()
     btnStart.destroy()
     make_list_of_q()
-    # startquiz()
+    startquiz()
 
 def quiz(roll,lr):
     global n,root,labeltext,btnStart
@@ -100,7 +220,7 @@ def quiz(roll,lr):
 
     root = tkinter.Tk()
     root.title(f"Quiz {n}")
-    root.geometry("700x400")
+    root.geometry("700x600")
     root.config(background="#ffffff")
     root.resizable(0,0)
 
@@ -110,7 +230,7 @@ def quiz(roll,lr):
         font = ("Comic sans MS",24,"bold"),
         background = "#ffffff",
     )
-    labeltext.pack(pady=(0,100))
+    labeltext.pack(pady=(200,50))
     
     img2 = PhotoImage(file="Frame.png")
     btnStart = Button(
@@ -122,7 +242,6 @@ def quiz(roll,lr):
     )
     btnStart.pack()
     root.mainloop()
-
 
 print("Kindly login to attempt the Quiz")
 login()

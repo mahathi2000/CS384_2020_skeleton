@@ -62,8 +62,37 @@ def login():
         print('Login failed. Kindly register yourself by filling in the following details')
         registration()
 
+# Reading questions and answers of respective quiz
+questions=[]
+answers_choice=[]
+indexes=[]
+def make_list_of_q():
+    cwd = os.getcwd()
+    path = os.path.join(cwd,f"quiz_wise_questions")
+    os.chdir(path)
+    global text
+    df = pd.read_csv(f"q{n}.csv")
+    text = df.values.tolist()
+    i=0
+    for row in text:
+        li=[]
+        li.append(row[2])
+        li.append(row[3])
+        li.append(row[4])
+        li.append(row[5])
+        answers_choice.append(li)
+        questions.append(row[1])
+        indexes.append(i)
+        i+=1
+    os.chdir(cwd)
+
+
+
 def startIspressed():
-    print("True")
+    labeltext.destroy()
+    btnStart.destroy()
+    make_list_of_q()
+    # startquiz()
 
 def quiz(roll,lr):
     global n,root,labeltext,btnStart
